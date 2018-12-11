@@ -10,32 +10,65 @@ import sys
 import re
 import os
 import shutil
-import commands
 import argparse
 
 """Copy Special exercise
 """
 
-# +++your code here+++
-# Write functions and modify main() to call them
+
+def get_special_paths(directory):
+    file_list = os.listdir(directory)
+    absol_path_list = []
+    for file in file_list:
+        special_pattern = re.findall(r'__\w+__', file)
+        if special_pattern:
+            absol_path_list.append(os.path.abspath(file))
+    return absol_path_list
+
+
+def copy_to(paths, directory):
+    for path in paths:
+        shutil.copy(path, directory)
+
+
+def zip_to(paths, zip_path):
+    print ("Command I'm going to do:\nzip -j "+zip_path)
+    for path in paths:
+        filezip = 'zip -j {} {}'.format(zip_path, path)
+        os.system(filezip)
+        print (path)
+
 
 def main():
-    # This snippet will help you get started with the argparse module.
     parser = argparse.ArgumentParser()
     parser.add_argument('--todir', help='dest dir for special files')
     parser.add_argument('--tozip', help='dest zipfile for special files')
-    # TODO need an argument to pick up 'from_dir'
+    parser.add_argument('from_dir', help='directory to search')
     args = parser.parse_args()
 
-    # TODO you must write your own code to get the cmdline args.
-    # Read the docs and examples for the argparse module about how to do this.
+    if not args:
+        parser.print_usage()
+        sys.exit(1)
 
-    # Parsing command line arguments is a must-have skill.
-    # This is input data validation.  If something is wrong (or missing) with any
-    # required args, the general rule is to print a usage message and exit(1).
+    todir = args.todir
+    tozip = args.tozip
+    from_dir = args.from_dir
 
-    # +++your code here+++
-    # Call your functions
-  
+    if not from_dir:
+        print 'This only works if you provide a directory to search'
+        parser.print_usage()
+        sys.exit(1)
+
+    special_paths = get_special_paths(from_dir)
+
+    if todir:
+        copy_to(special_paths, todir)
+    elif tozip:
+        zip_to(special_paths, tozip)
+    else:
+        for path in special_paths:
+            print path
+
+
 if __name__ == "__main__":
     main()
