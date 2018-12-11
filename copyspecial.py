@@ -20,8 +20,8 @@ def get_special_paths(directory):
     file_list = os.listdir(directory)
     absol_path_list = []
     for file in file_list:
-        special_pattern = re.findall(r'__\w+__', file)
-        if special_pattern:
+        special_file = re.findall(r'__\w+__', file)
+        if special_file:
             absol_path_list.append(os.path.abspath(file))
     return absol_path_list
 
