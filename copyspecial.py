@@ -34,8 +34,8 @@ def copy_to(paths, directory):
 def zip_to(paths, zip_path):
     print ("Command I'm going to do:\nzip -j "+zip_path)
     for path in paths:
-        filezip = 'zip -j {} {}'.format(zip_path, path)
-        os.system(filezip)
+        command_zip = 'zip -j {} {}'.format(zip_path, path)
+        os.system(command_zip)
         print (path)
 
 
