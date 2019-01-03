@@ -27,7 +27,6 @@ def get_special_paths(directory):
 
 
 def copy_to(paths, directory):
-    directory = '.' + directory
     if not os.path.exists(directory):
         os.makedirs(directory)
     for path in paths:
